@@ -1,0 +1,79 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block title %}Lista Productos{% endblock %}
+
+{% block body %}
+    
+    <section id="bgkc" class="container">
+        <div id="contlist" class="container mt-5">
+            <div class="d-flex col-md-4 mt-5 mb-5 mx-auto">
+                <input id="listSearch" class="form-control me-2" data-bs-toggle="collapse" data-bs-target="#collapsesbar" aria-expanded="false" aria-controls="collapsesbar" type="search" placeholder="Search" aria-label="Search">
+            </div>
+            <h3>Listado de productos</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">SKU</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Desarrollador</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Genero</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Opciones</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for i in Prod %}
+                        <tr>
+                            <th scope="row">{{i.p_id}}</th>
+                            <td><img src="{{i.p_img.url}}" alt="" height="50"></td>
+                            <td>{{i.p_titulo}}</td>
+                            <td>{{i.p_des}}</td>
+                            <td>{{i.p_precio}}</td>
+                            <td>{{i.id_c}}</td>
+                            <td>{{i.p_stock}}</td>
+                            <td>
+                                <a href="/editarproducto/{{i.p_id}}" class="btn btn-outline-primary">Editar</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-danger btn-abrir-modal" data-bs-toggle="modal" data-bs-target="#pemodal" data-product-id="{{i.p_id}}">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="modal fade" id="pemodal" aria-hidden="true" aria-labelledby="prodagresats" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5">Eliminar Producto</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <h6 id="modalbody"></h6>
+                </div>
+                <div class="modal-footer">
+                  <a id="delBtn" href="#" class="btn btn-outline-danger">Eliminar</a>
+                  <button id="caBtn"class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+    </section>
+
+
+
+{% endblock body %}
+
+{% block script %}
+    <script src="{% static 'js/functions.js' %}"></script>
+{% endblock %}

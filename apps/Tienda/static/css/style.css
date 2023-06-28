@@ -1,0 +1,77 @@
+#bgnlgn{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    transform: translateX(calc((100% - 100vw) / 2));
+    z-index: -2;
+}
+
+#contlgn{
+    width: 100%;
+    height: 100%;
+    left: 0;
+    z-index: 10;
+}
+
+#resultadosCollapse{
+    position: absolute;
+    left: 60%; 
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+#resultadosCollapse .card{
+    background-color: white;
+}
+
+#ccbtnc{
+    padding: 5%;
+}
+
+#resultadosCollapse img{
+    height: 75px;
+    width: 50px;
+    margin-left: 2rem;
+    margin-right: 10rem;
+}
+
+#indexcardcont{
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-left: 0;
+    margin-right: 0;
+    display: inline;
+    flex-direction: row;
+    font-size: 30;
+    text-align: center;
+    
+}
+
+#indexcardcont a{
+    width: 11rem; 
+    margin-left: 2rem;
+    margin-top: 1rem;
+    text-decoration: none;
+}
+
+
+@font-face {
+    font-family: fuente1;
+    src: url(font/Silver\ Smile.ttf);
+}
+
+.nav-item{
+    list-style: none;
+}
+
+.error{
+    color: red;
+}
+
+.cardindex{
+    background-color: rgba(51, 51, 51, 0.7);
+    color: white;
+}

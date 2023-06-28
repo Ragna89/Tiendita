@@ -1,0 +1,69 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block title %}Lista Usuarios{% endblock %}
+
+{% block body %}
+    
+    <section id="bgkc" class="onesal">
+        <div id="contlist" class="container mt-5">
+            <div class="d-flex col-md-4 mt-5 mb-5 mx-auto">
+                <input id="listSearch" class="form-control me-2" data-bs-toggle="collapse" data-bs-target="#collapsesbar" aria-expanded="false" aria-controls="collapsesbar" type="search" placeholder="Search" aria-label="Search">
+            </div>
+            <h3>Listado de Usuarios</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for i in Users %}
+                        <tr>
+                            <th scope="row">{{i.username}}</th>
+                            <td>{{i.email}}</td>
+                            <td>
+                                {% comment %} <a href="/edProd/{{i.prod_id}}" class="btn btn-outline-primary">Editar</a> {% endcomment %}
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-danger btn-abrir-modalul" data-bs-toggle="modal" data-bs-target="#uemodal" data-username="{{i.username}}">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="modal fade" id="uemodal" aria-hidden="true" aria-labelledby="prodagresats" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5">Eliminar Usuarios</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <h6 id="modalbodyue"></h6>
+                </div>
+                <div class="modal-footer">
+                  <a id="delBtnul" href="#" class="btn btn-outline-danger">Eliminar</a>
+                  <button id="caBtn"class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+    </section>
+
+
+
+{% endblock body %}
+
+{% block script %}
+    <script src="{% static 'js/funciones.js' %}"></script>
+{% endblock %}

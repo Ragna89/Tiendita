@@ -1,0 +1,53 @@
+
+{% extends './base.html' %}
+{% load static %}
+
+
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+
+<section id="bgkc" class="onesalg">
+    <form id="registerform" method="POST" novalidate> {% csrf_token %}
+        <div class="form-group">
+            <div id="contlgn" class=" d-flex align-items-center" style=" margin-top: 3%;">
+                <div class="container col-md-4" style="background: rgba(51,51,51,0.8); padding: 5%;">
+                    <div class="d-flex mx-auto mb-3"><h4 style="color: white;">Registro de Usuario</h4><br></div>
+                    <div class="col align-items-center">
+                        <label for="r_username" class="form-label" style="color: white;">Ingrese Nombre Usuario:</label>
+                        <input type="text" id="r_username" name="username" placeholder="Username" class="form-control">
+                    </div>
+                    <br>
+                    <div class="col align-items-center">
+                        <label for="r_email" class="form-label" style="color: white;">Ingrese E-Mail:</label>
+                        <input type="text" id="r_email" name="email" placeholder="alguien@ejemplo.com" class="form-control">
+                    </div>
+                    <br>
+                    <div class="col align-items-center">
+                        <label for="r_password" class="form-label" style="color: white;">Ingrese Contraseña:</label>
+                        <input type="password" placeholder="*********" id="r_password" name="password" class="form-control">
+                    </div>
+                    <div class="d-flex justify-content-center" style=" padding: 2%; margin-top: 4%;">
+                        <button class="btn btn-outline-dark" type="submit" style="color: white;">Registrarse</button>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-center" style="color: white;">
+                        <div><p>¿Posee una Cuenta?</p></div>
+                        <div style="margin-left: 10px;"><a style="color: rgb(99, 218, 214);" href="/login">Iniciar Sesión</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+{% endblock body %}
+
+{% block script%}
+<script src="{% static 'js/funciones.js' %}"></script>
+<script src="{% static 'js/forms.js' %}"></script>
+{% endblock %}

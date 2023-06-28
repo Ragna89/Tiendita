@@ -1,0 +1,55 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block head %} 
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+{% endblock %}
+
+{% block title %} {{Prod.p_titulo}} {% endblock %}
+
+{% block body %} 
+    <img id="bgnlgn" src="{% static 'img/background.jpg' %}" alt="">    
+    <div class="row" style="padding: 1%; margin-top: 2%;">
+        <div class="d-flex col-lg-4 justify-content-center" style="height: 100%;">
+            <img src="{{Prod.p_img.url}}" alt="No Imagen" width="400rem" height="600rem">
+        </div>
+        <div class="col-lg-7" style="color: white; height: 100%; padding: 4%; background: rgba(51, 51, 51, 0.8);">
+            <div id="producto-1" data-img="{{Prod.p_img.url}}" data-nombre="{{Prod.p_titulo}}" data-precio="{{Prod.p_precio}}">
+                <h6>CDO {{Prod.p_id}}</h6>
+                <br>
+                <h5>SCE {{Prod.p_des}}</h5>
+                <h2 style="font-family: fuente1;">{{Prod.p_titulo}}</h2>
+            </div>
+            <div class="col-lg-9"><h6>Género: {{Prod.id_c}}</h6></div>
+            <br>
+            <div class="col-lg-9">
+                <p>{{Prod.p_desc}}</p>
+            </div>
+            <br>
+            <div class="d-flex col-lg justify-content-center"><h2>Precio: ${{Prod.p_precio}}</h2></div>
+            <br>
+            <div class="d-flex col-lg justify-content-center">
+                <a href="#" id="agregarBtn"><button class="btn btn-outline-primary" style="color: white;" type="button" data-bs-target="#prodagresatsmodal" data-bs-toggle="modal" onclick="comprar(1)"><h4>Agregar al Carro</h4></button></div></a>
+        </div>
+        <div class="col-lg-1"><br></div>
+    </div>
+
+    <div id="indexcardcont" class="container d-flex row justify-content-center" style="margin-left: 10%; width: 80%; background: rgba(51, 51, 51, 0.8); color: white; border: solid black;">
+        <div class="d-flex justify-content-center"><h5>Tambien te puede interesar</h5></div>
+        <div class="d-flex justify-content-center">
+                {% for j in Ultprod %}
+                <a href="/producto/{{j.p_id}}">
+                    <div class="card cardindex">
+                        <img src="{{j.p_img.url}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p class="card-text" style="text-align: center;">{{j.p_titulo}}</p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+        </div>
+    </div>
+    
+{% endblock %}
+
+{% block script %} {% endblock %}
