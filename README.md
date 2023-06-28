@@ -1,0 +1,2 @@
+# Tiendita
+Tiendita ahora django
