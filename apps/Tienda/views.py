@@ -4,6 +4,7 @@ from django.conf import settings
 from .forms import RegisterForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 import os
 import json
 from django.contrib import messages
@@ -11,61 +12,116 @@ from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
 def cargarinicio(request):
-    productos = Producto.objects.all()
-    return render(request, "index.html", {"Prod": productos })
+    plataforma = Plataforma.objects.all()
+    productos = Producto.objects.order_by('-p_fecha')[:7]
+    return render(request, "index.html", {"Prod": productos, "Gen": plataforma })
 
+@staff_member_required(login_url='login')
 def cargaragregar(request):
-    genero = Genero.objects.all()
-    return render(request, "agregar.html", {"Gen": genero})
+    plataforma = Plataforma.objects.all()
+    return render(request, "agregar.html", {"Gen": plataforma})
 
+@staff_member_required(login_url='login')
 def cargareditar(request, id):
-    genero = Genero.objects.all()
+    plataforma = Plataforma.objects.all()
     productos = Producto.objects.get(p_id = id)
     gen_id = productos.id_c
-    prodgen_id = Genero.objects.get(c_id = gen_id.c_id).c_id
-    return render(request, "editarjuego.html", {"Prod": productos, "Gen": genero, "Gen_id": prodgen_id})
+    prodgen_id = Plataforma.objects.get(c_id = gen_id.c_id).c_id
+    return render(request, "editarjuego.html", {"Prod": productos, "Gen": plataforma, "Gen_id": prodgen_id})
 
 def cargarjuegoo(request, id):
     producto = Producto.objects.get(p_id = id)
     productos = Producto.objects.all()
     ultimosagr = Producto.objects.order_by('-p_fecha')[:5]
-    genero = Genero.objects.all()
+    plataforma = Plataforma.objects.all()
     gen_id = producto.id_c
-    prodgen_id = Genero.objects.get(c_id = gen_id.c_id).c_id
-    return render(request, "basejuego.html", {'Prod': producto, 'Gen': genero, 'Gen_id': prodgen_id, 'Produ': productos, 'Ultprod': ultimosagr})
+    prodgen_id = Plataforma.objects.get(c_id = gen_id.c_id).c_id
+    return render(request, "basejuego.html", {'Prod': producto, 'Gen': plataforma, 'Gen_id': prodgen_id, 'Produ': productos, 'Ultprod': ultimosagr})
 
+@staff_member_required(login_url='login')
 def cargarlista(request):
     producto = Producto.objects.all()
-    genero = Genero.objects.all()
-    return render(request, "listaproducto.html", {'Prod': producto, 'Gen': genero})
+    plataforma = Plataforma.objects.all()
+    return render(request, "listaproducto.html", {'Prod': producto, 'Gen': plataforma})
 
+@staff_member_required(login_url='login')
+def cargaragrplat(request):
+    return render(request, 'agrplataforma.html')
 
+def cargarplataforma(request, id):
+    plataforma = Plataforma.objects.get(c_id = id)
+    producto = Producto.objects.filter(id_c = id)
+    todas_plat = Plataforma.objects.all() 
+    return render(request, "plataforma.html", {"Prod": producto, "Plat": plataforma, "Gen": todas_plat})
+
+@staff_member_required(login_url='login')
+def admplataforma(request):
+    plataforma = Plataforma.objects.all()
+    return render(request, "admplataforma.html", {'Gen': plataforma})
+
+@staff_member_required(login_url='login')
+def agregarplat(request):
+    agr_nombre = request.POST['nombre']
+
+    conter = 1
+    agr_id = int(conter)
+    while Plataforma.objects.filter(c_id = agr_id).exists():
+        conter += 1
+        agr_id = int(conter)
+
+    Plataforma.objects.create(
+        c_id = agr_id,
+        c_plataforma = agr_nombre)
+    messages.success(request, 'La Plataforma ha sido Agregada Exitosamente.')
+    return redirect('/admplataforma')
+
+def obtenerinfplat (request):
+    plat_id = request.GET.get('id')
+    plataforma = Plataforma.objects.get(c_id = plat_id)
+
+    plat_info = {
+        'name': plataforma.c_plataforma
+    }
+    return JsonResponse(plat_info)
+
+@staff_member_required(login_url='login')
+def eliminarplat(request, id):
+    plataforma = Plataforma.objects.get(c_id = id)
+    plataforma.delete()
+
+    messages.error(request, 'La plataforma ha sido Eliminada Exitosamente')
+
+    return redirect('/admplataforma')
+
+@staff_member_required(login_url='login')
 def agregarprod(request):
     agr_titulo = request.POST['titulo']
     agr_precio = request.POST['precio']
     agr_stock = request.POST['stock']
-    agr_genero = Genero.objects.get(c_id = request.POST['genero'])
+    agr_plataforma = Plataforma.objects.get(c_id = request.POST['genero'])
     agr_desarrollador = request.POST['desarrollador']
     agr_descripcion = request.POST['descripcion']
     agr_imagen = request.FILES['imagen']
 
     id_cat = request.POST.get('genero')
 
-    gen = Genero.objects.get(c_id = id_cat)
-    conter = Producto.objects.filter(id_c = gen).count()
-    agr_id = int(id_cat + '0' + str(conter + 1))
+    conter = 0
+    agr_id = int(id_cat + '0' + str(conter))
+    while Producto.objects.filter(p_id = agr_id).exists():
+        conter += 1
+        agr_id = int(id_cat + '0' + str(conter))
 
     Producto.objects.create(
         p_id = agr_id,
         p_titulo = agr_titulo,
         p_precio = agr_precio,
-        id_c = agr_genero,
+        id_c = agr_plataforma,
         p_stock = agr_stock,
         p_des = agr_desarrollador,
         p_desc = agr_descripcion,
         p_img = agr_imagen)
-    
-    return redirect('/jagregar')
+    messages.success(request, 'El Producto ha sido Agregado Exitosamente.')
+    return redirect('/listaproductos')
 
 def obInfProd(request):
     pro_id = request.GET.get('id')
@@ -76,6 +132,7 @@ def obInfProd(request):
     }
     return JsonResponse(producto_info)
 
+@staff_member_required(login_url='login')
 def delProduct(request,id):
     product = Producto.objects.get(p_id = id)
     product.delete()
@@ -86,13 +143,14 @@ def delProduct(request,id):
 
     return redirect('/listaproductos')
 
+@staff_member_required(login_url='login')
 def editProd(request):
     ed_id = request.POST['SKU']
     BProduct = Producto.objects.get(p_id = ed_id)
     edit_titulo = request.POST['titulo']
     edit_precio = request.POST['precio']
     edit_stock = request.POST['stock']
-    edit_genero = Genero.objects.get(c_id = request.POST['genero'])
+    edit_genero = Plataforma.objects.get(c_id = request.POST['genero'])
     edit_desarrollador = request.POST['desarrollador']
     edit_descripcion = request.POST['descripcion']
     
@@ -182,9 +240,11 @@ def cRegister(request):
 
     return render(request, 'register.html', {'form': form})
 
+@staff_member_required(login_url='login')
 def cUserlist(request):
     usuarios = User.objects.all()
-    return render(request, "Userlist.html", {"Users": usuarios})
+    plataforma = Plataforma.objects.all()
+    return render(request, "Userlist.html", {"Users": usuarios, "Gen": plataforma})
 
 def obInfUser(request):
     use_id = request.GET.get('id')
@@ -195,7 +255,47 @@ def obInfUser(request):
     }
     return JsonResponse(user_info)
 
+@staff_member_required(login_url='login')
+def cedUser(request, username):
+    user = User.objects.get(username=username)
+    return render(request, 'edUser.html', {'User': user})
 
+@staff_member_required(login_url='login')
+def editUser(request):
+    usernamel = request.user.username
+    username = request.POST['usernameo']
+    usern = request.POST['username']
+    emailo = request.POST['emailo']
+    emailn = request.POST['email']
+    staffcb = request.POST.get('txStaff') == 'on'
+    npass = request.POST['upassword']
+    admpass = request.POST['admpassword']
+
+    user = authenticate(request, username=usernamel, password=admpass)
+
+    if(usern != username):
+        if User.objects.filter(username=usern).exists():
+            messages.error(request, 'El Nombre de Usuario ya esta en uso')
+            return redirect('/edUser/'+username)
+    if(emailn != emailo):
+        if User.objects.filter(email=emailn).exists():
+            messages.error(request, 'El Email ya esta en uso')
+            return redirect('/edUser/'+username)
+    if user is not None:
+        user = User.objects.get(username=username)
+        user.username = usern
+        user.email = emailn
+        user.is_staff = staffcb
+        if(npass != ''):
+            user.set_password(npass)
+        user.save()
+        messages.success(request, 'El Usuario se ha Editado Exitosamente')
+        return redirect('/userlist')
+    else:
+        messages.error(request, 'La Contraseña es Incorrecta')
+        return redirect('/edUser/'+username)
+
+@staff_member_required(login_url='login')
 def delUser(request,username):
 
     if User.objects.filter(username=username).exists():
@@ -211,4 +311,97 @@ def delUser(request,username):
 
     return redirect('/userlist')
 
+@login_required(login_url='login')
+def cmicuenta(request):
+    plat = Plataforma.objects.all()
+    return render(request, 'micuenta.html', {'Gen': plat})
 
+@login_required(login_url='login')
+def cedDatos(request, username):
+    plat = Plataforma.objects.all()
+    user = User.objects.get(username=username)
+    return render(request, 'edDatos.html', {'Gen': plat, 'User': user})
+
+@login_required(login_url='login')
+def edDatos(request):
+    usernamel = request.user.username
+    username = request.POST['usernameo']
+    usern = request.POST['username']
+    emailo = request.POST['emailo']
+    emailn = request.POST['email']
+    npass = request.POST['password']
+
+    user = authenticate(request, username=usernamel, password=npass)
+
+    if(usern != username):
+        if User.objects.filter(username=usern).exists():
+            messages.error(request, 'El Nombre de Usuario ya esta en uso')
+            return redirect('/edDatos/'+username)
+    if(emailn != emailo):
+        if User.objects.filter(email=emailn).exists():
+            messages.error(request, 'El Email ya esta en uso')
+            return redirect('/edDatos/'+username)
+    if user is not None:
+        user = User.objects.get(username=username)
+        user.username = usern
+        user.email = emailn
+        user.save()
+        messages.success(request, 'El Usuario se ha Editado Exitosamente')
+        return redirect('/cargarcuenta')
+    else:
+        messages.error(request, 'La Contraseña es Incorrecta')
+        return redirect('/edDatos/'+username)
+    
+def cnewpass(request, username):
+    plat = Plataforma.objects.all()
+    user = User.objects.get(username=username)
+    return render(request, 'contraseña.html', {'Gen': plat, 'User': user})
+
+def newpass(request):
+    usernamel = request.user.username
+    npass = request.POST['password']
+    newpass = request.POST['newpassword']
+
+    user = authenticate(request, username=usernamel, password=npass)
+
+    if user is not None:
+        user = User.objects.get(username=usernamel)
+        user.set_password(newpass)
+        user.save()
+        messages.success(request, 'La Contraseña se ha Cambiado Exitosamente')
+        return redirect('/cargarcuenta')
+    else:
+        messages.error(request, 'La Contraseña es Incorrecta')
+        return redirect('/cnewpass/'+usernamel)
+    
+@login_required(login_url='login')
+def cdelAcc(request, username):
+    plat = Plataforma.objects.all()
+    user = User.objects.get(username=username)
+    return render(request, 'borrarcuenta.html', {'Gen': plat, 'User': user})
+
+@login_required(login_url='login')
+def delAcc(request):
+    username = request.user.username
+    passw = request.POST['password']
+
+    user = authenticate(request, username=username, password=passw)
+
+    if user is not None:
+        if User.objects.filter(username=username).exists():
+            user = User.objects.get(username=username)
+            user.delete()
+            messages.error(request, 'El Usuario ha sido Eliminado Exitosamente.')
+            return redirect('login')
+        else:
+            messages.error(request, 'Usuario no Existe.')
+            return redirect('login')
+    else:
+        messages.error(request, 'La Contraseña Ingresada es Incorrecta')
+        return redirect('/cdelAcc/'+ username)
+    
+@login_required(login_url='login')
+def cCarrito(request):
+    prod = Producto.objects.all()
+    cate = Plataforma.objects.all()
+    return render(request, 'carro.html', {'Prod': prod, 'Gen': cate})

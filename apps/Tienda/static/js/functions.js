@@ -15,111 +15,6 @@ function actualizaReloj(){
 }
 
 $(function(){
-    $("#loginform").validate({
-        rules:{
-            email:{
-                required: true,
-                email: true
-            },
-            password:{
-                required:true,
-                minlength: 8
-            }
-        },
-        messages:{
-            email:{
-                required:"El Correo es Obligatorio.",
-                email:"Formato correo no valido."
-            },
-            password:{
-                required:"Debe Ingresar una Contraseña",
-                minlength:"Debe contener al menos 8 Caracteres"
-            }
-        }
-    })
-})
-
-var array_productos = [];
-
-        if (localStorage.getItem('Productos')) {
-            array_productos = JSON.parse(localStorage.getItem('Productos')) || [];
-        }
-
-        function comprar(id) {
-            var producto = $('#producto-' + id);
-
-            var p = {
-                id: id,
-                img: producto.data('img'),
-                nombre: producto.data('nombre'),
-                precio: producto.data('precio')
-            };
-
-            array_productos.push(p);
-
-            localStorage.setItem('Productos', JSON.stringify(array_productos));
-            llenar_carro();
-        }
-
-        function llenar_carro() {
-            $('#carrito-producto').html('');   
-            var texto = '';
-            var total = 0;
-            array_productos.forEach(producto => {
-                texto = texto + `
-                <tr>
-                  <td><img src="${producto.img}" width="50px"></td>
-                  <td>${producto.nombre}</td>
-                  <td>$${producto.precio}</td>
-                </tr>
-                `;
-
-                total += producto.precio;
-            });
-
-            $('#carrito-producto').append(texto);         
-            $('#carrito-precio').html(total);       
-            $('#carrito-precio1').append(total);    
-        }
-
-        function vaciarCarro(){
-            localStorage.removeItem('Productos');
-            toastbuy();
-            comprar = document.getElementById('btncomprar')
-            comprar.addEventListener('click', function(){
-                comprar.href = '/'
-            })
-        }
-
-function toastbuy(){
-  var successbuyToast = document.getElementById('successbuyToast');
-  var toast = new bootstrap.Toast(successbuyToast);
-  toast.show();
-
-  setTimeout(function() {
-      var successbuyToast = document.getElementById('successbuyToast');
-
-      if (successbuyToast) {
-          var toast = new bootstrap.Toast(successbuyToast);
-          successbuyToast.classList.add("d-none");
-        }
-  }, 1000);
-
-}
-
-
-
-function onLoad(){
-    actualizaReloj()
-    llenar_carro()
-    var arrayData = JSON.parse(localStorage.getItem('Productos'));
-    var arrayLength = arrayData.length;
-    var spanElement = document.getElementById('carrospan');
-    spanElement.textContent = arrayLength;
-}
-
-
-$(function(){
     $("#listSearch").on("keyup", function(){
         let val = $(this).val().toLowerCase();
         $("table tbody tr").filter(function(){
@@ -134,47 +29,23 @@ $(function(){
     })
 })
 
-var abrirModalBtn = document.querySelectorAll('.btn-abrir-modal');
+$(document).ready(function() {
+    if ($('.alert-success').length) {
+        var successToast = document.getElementById('successToast');
+        var toast = new bootstrap.Toast(successToast);
+        toast.show();
+    }
+    setTimeout(function() {
+        var successToast = document.getElementById('successToast');
 
-abrirModalBtn.forEach(function(button) {
-  button.addEventListener('click', function() {
-    var productId = button.getAttribute('data-product-id');
-
-    var modal = document.getElementById('pemodal');
-    modal.setAttribute('data-product-id', productId);
-    fetch("/obtenerproducto?id=" + productId)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(data) {
-        document.getElementById("modalbody").textContent = "¿Esta seguro que Desea Eliminar "+ data.name +"?";
-      })
-      .catch(function(error) {
-        console.error("Error al obtener la información del producto:", error);
-      });
-      var delProd = document.getElementById('delBtn');
-      delProd.href = '/borrarproducto/' + productId;
-  });
+        if (successToast) {
+            var toast = new bootstrap.Toast(successToast);
+            successToast.classList.add("d-none");
+        }
+    }, 1000);
 });
-
 
 $(document).ready(function() {
-  if ($('.alert-success').length) {
-      var successToast = document.getElementById('successToast');
-      var toast = new bootstrap.Toast(successToast);
-      toast.show();
-  }
-  setTimeout(function() {
-      var successToast = document.getElementById('successToast');
-      
-      if (successToast) {
-          var toast = new bootstrap.Toast(successToast);
-          successToast.classList.add("d-none");
-        }
-  }, 1000);
-});
-
-  $(document).ready(function() {
     if ($('.alert-success').length) {
         var errorToast = document.getElementById('errorToast');
         var toast = new bootstrap.Toast(errorToast);
@@ -186,15 +57,15 @@ $(document).ready(function() {
         if (errorToast) {
             var toast = new bootstrap.Toast(errorToast);
             errorToast.classList.add("d-none");
-          }
+        }
     }, 1000);
-  });
+});
 
-  $(document).ready(function() {
+$(document).ready(function() {
     $('#searchInput').on('keyup', function() {
         var searchTerm = $(this).val();
         $.ajax({
-            url: 'search/',
+            url: '/search/',
             type: 'GET',
             data: { 'q': searchTerm },
             success: function(response) {
@@ -213,37 +84,105 @@ $(document).ready(function() {
                     };
 
                     $('#resultadosCollapse .card').append(content);
-                 });
+                });
             }
         });
     });
 });
 
+//Funcion Mostrar Modal Eliminar Producto
+var abrirModalBtn = document.querySelectorAll('.btn-abrir-modal');
+if(abrirModalBtn){
+    abrirModalBtn.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var productId = button.getAttribute('data-product-id');
+
+            var modal = document.getElementById('pemodal');
+            modal.style.display = 'flex';
+            modal.setAttribute('data-product-id', productId);
+            fetch("/obtenerproducto?id=" + productId)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                document.getElementById("modalbody").textContent = "¿Esta seguro que Desea Eliminar "+ data.name +"?";
+            })
+            .catch(function(error) {
+                console.error("Error al obtener la información del producto:", error);
+            });
+            var delProd = document.getElementById('delBtn');
+            delProd.href = '/borrarproducto/' + productId;
+            delProd.addEventListener('click', function(){
+                modal.style.display = 'none';
+            });
+            var caBtn = document.getElementById('caBtn');
+            caBtn.addEventListener('click', function(){
+                modal.style.display = 'none';
+            });
+        });
+    });
+}
+//Funcion Mostrar Modal Eliminar Usuario
 var abrirModalBtnul = document.querySelectorAll('.btn-abrir-modalul');
+if (abrirModalBtnul){
+    abrirModalBtnul.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var userId = button.getAttribute('data-username');
 
+            var modal = document.getElementById('uemodal');
+            modal.style.display = 'flex';
+            modal.setAttribute('data-username', userId);
+            fetch("/obtainUser?id=" + userId)
+                .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                document.getElementById("modalbodyue").textContent = "¿Esta seguro que Desea Eliminar "+ data.name +"?";
+            })
+            .catch(function(error) {
+                console.error("Error al obtener la información del Usuario:", error);
+            });
+            var delProdul = document.getElementById('delBtnul');
+            delProdul.href = '/delUser/' + userId;
+            delProdul.addEventListener('click', function(){
+                modal.style.display = 'none';
+            });
+            var caBtn = document.getElementById('caBtn');
+            caBtn.addEventListener('click', function(){
+                modal.style.display = 'none';
+            });
+        });
+    });
+}
+//Mostrar Modal Eliminar Plataforma
+var abrirModalBtncl = document.querySelectorAll('.btn-abrir-modalep');
+if (abrirModalBtncl){
+    abrirModalBtncl.forEach(function(button) {
+        button.addEventListener('click', function() {
+        var categoryId = button.getAttribute('data-product-id');
 
-
-abrirModalBtnul.forEach(function(button) {
-  button.addEventListener('click', function() {
-    var userId = button.getAttribute('data-username');
-
-    var modal = document.getElementById('uemodal');
-    modal.setAttribute('data-username', userId);
-    fetch("/obtainUser?id=" + userId)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(data) {
-        document.getElementById("modalbodyue").textContent = "¿Esta seguro que Desea Eliminar "+ data.name +"?";
-      })
-      .catch(function(error) {
-        console.error("Error al obtener la información del Usuario:", error);
-      });
-      var delProdul = document.getElementById('delBtnul');
-      delProdul.href = '/delUser/' + userId;
-  });
-});
-
-document.getElementById("agregarBtn").addEventListener("click", function() {
-    location.reload();
-  });
+        var modal = document.getElementById('epmodal');
+        modal.style.display = 'flex';
+        modal.setAttribute('data-product-id', categoryId);
+        fetch("/obtenerinfplat?id=" + categoryId)
+            .then(function(response) {
+            return response.json();
+            })
+            .then(function(data) {
+            document.getElementById("modalbodyep").textContent = "¿Esta seguro que Desea Eliminar la Plataforma "+ data.name +"?";
+            })
+        .catch(function(error) {
+            console.error("Error al obtener la información de la Categoria:", error);
+        });
+        var delProdce = document.getElementById('delBtnep');
+        delProdce.href = '/delplat/' + categoryId;
+        delProdce.addEventListener('click', function(){
+            modal.style.display = 'none';
+        });
+        var caBtn = document.getElementById('caBtn');
+        caBtn.addEventListener('click', function(){
+            modal.style.display = 'none';
+        });
+        });
+    });
+}

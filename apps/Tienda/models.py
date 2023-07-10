@@ -2,19 +2,19 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-class Genero(models.Model):
+class Plataforma(models.Model):
     c_id = models.IntegerField(primary_key=True, unique=True)
-    c_genero = models.CharField(max_length=50, null=False)
+    c_plataforma = models.CharField(max_length=50, null=False)
     
     def __str__(self):
         txt = "{0}"
-        return txt.format(self.c_genero)
+        return txt.format(self.c_plataforma)
 
 class Producto(models.Model):
     p_id = models.IntegerField(primary_key=True, unique=True)
     p_titulo = models.CharField(max_length=100, null=False)
     p_precio = models.IntegerField(null=False)
-    id_c = models.ForeignKey(Genero, on_delete=models.CASCADE)
+    id_c = models.ForeignKey(Plataforma, on_delete=models.CASCADE)
     p_des = models.CharField(max_length=50, null=False)
     p_desc = models.CharField(max_length=1000, null=False)
     p_stock = models.IntegerField(null=False)

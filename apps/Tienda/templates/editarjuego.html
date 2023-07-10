@@ -5,14 +5,14 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
 {% endblock %}
 
-{% block title %} Agregar {% endblock %}
+{% block title %} Datos Juego {% endblock %}
 
 {% block body %} 
     <img id="bgnlgn" src="{% static 'img/background.jpg' %}" alt="">
     <div class="container" style="padding-bottom: 3%;">
-        <form id="editarform" action="/jeditar" method="POST" enctype="multipart/form-data"> {% csrf_token %}
-                <div id="contlgn" class="container">
-                    <div class="row row-col-7" style="background: rgba(51,51,51,0.7); padding: 5%; margin-top: 5%; margin-left: 20%; margin-right: 20%;">
+            <div id="contlgn" class="container">
+                <div class="row row-col-7" style="background: rgba(51,51,51,0.7); padding: 5%; margin-top: 5%; margin-left: 20%; margin-right: 20%;">
+                    <form id="editarform" action="/jeditar" method="POST" enctype="multipart/form-data"> {% csrf_token %}
                         <div class="col-md-12">
                             <label for="SKU" class="form-label" style="color: white;">SKU:</label>
                             <input readonly value="{{Prod.p_id}}" name="SKU" type="text" id="SKU" class="form-control">
@@ -30,11 +30,11 @@
                             <input value="{{Prod.p_stock}}" name="stock" type="number" id="stock" class="form-control">
                         </div>
                         <div class="col-md-12">
-                            <label for="genero" class="form-label" style="color: white;">Genero:</label>
+                            <label for="genero" class="form-label" style="color: white;">Plataforma:</label>
                             <select name="genero" id="genero" class="form-select" aria-label="Default select example">
                                 <option selected disabled value="null">Seleccione</option>
                                 {% for g in Gen %}
-                                    <option {% if Gen_id == g.c_id %} selected {% endif %} value="{{g.c_id}}">{{g.c_genero}}</option>
+                                    <option {% if Gen_id == g.c_id %} selected {% endif %} value="{{g.c_id}}">{{g.c_plataforma}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -53,11 +53,13 @@
                         </div>
                         <div class="d-flex justify-content-center mt-5">
                             <button class="btn btn-success me-2" type="submit">Editar</button>
-                            <a href="/"><button class="btn btn-danger" type="submit">Cancelar</button></a>
                         </div>
+                    </form>
+                    <div class="d-flex justify-content-center mt-3">
+                        <a href="/listaproductos"><button class="btn btn-danger" >Cancelar</button></a>
                     </div>
                 </div>
-        </form>
+            </div>
     </div>
 
 {% endblock %}

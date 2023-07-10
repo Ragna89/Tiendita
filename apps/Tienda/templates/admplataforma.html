@@ -1,0 +1,69 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block head %} 
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+{% endblock %}
+
+{% block title %} Lista Plataformas {% endblock %}
+
+{% block body %}
+
+<section id="bgkc" class="container">
+    <div id="contlist" class="container mt-5">
+        <div class="d-flex col-md-4 mt-5 mb-5 mx-auto">
+            <input id="listSearch" class="form-control me-2" data-bs-toggle="collapse" data-bs-target="#collapsesbar" aria-expanded="false" aria-controls="collapsesbar" type="search" placeholder="Search" aria-label="Search">
+        </div>
+        <div class="col-md-6 mx-auto">
+        <h3 style="color: white;">Lista Plataformas</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">SKU</th>
+                <th scope="col"></th>
+                <th scope="col">Plataforma</th>
+                <th scope="col">Opciones</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for i in Gen %}
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="row">{{i.c_id}}</th>
+                        <th scope="col"></th>
+                        <td>{{i.c_plataforma}}</td>
+                        <td>
+                            <a class="btn btn-outline-danger btn-abrir-modalep" data-bs-toggle="modal" data-bs-target="#epmodal" data-product-id="{{i.c_id}}">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        <div class="d-flex justify-content-center mt-5 mb-5">
+            <a href="/cargaragrplataforma"><button class="btn btn-primary me-2" type="submit">Agregar</button></a>
+        </div>
+    </div>
+    <div class="modal fade" id="epmodal" aria-hidden="true" aria-labelledby="prodagresats" tabindex="-1" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Eliminar Plataforma</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 id="modalbodyep"></h6>
+                </div>
+                <div class="modal-footer">
+                    <a id="delBtnep" href="#" class="btn btn-outline-danger">Eliminar</a>
+                    <button id="caBtn"class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block script %} {% endblock %}

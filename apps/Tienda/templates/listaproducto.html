@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% endblock %}
 
-{% block title %}Lista Productos{% endblock %}
+{% block title %} Lista de Productos {% endblock %}
 
 {% block body %}
     
@@ -14,7 +14,7 @@
             <div class="d-flex col-md-4 mt-5 mb-5 mx-auto">
                 <input id="listSearch" class="form-control me-2" data-bs-toggle="collapse" data-bs-target="#collapsesbar" aria-expanded="false" aria-controls="collapsesbar" type="search" placeholder="Search" aria-label="Search">
             </div>
-            <h3>Listado de productos</h3>
+            <h3 style="color: white;">Listado de productos</h3>
             <table class="table">
                 <thead>
                 <tr>
@@ -23,7 +23,7 @@
                     <th scope="col">Titulo</th>
                     <th scope="col">Desarrollador</th>
                     <th scope="col">Precio</th>
-                    <th scope="col">Genero</th>
+                    <th scope="col">Plataforma</th>
                     <th scope="col">Stock</th>
                     <th scope="col">Opciones</th>
                     <th scope="col"></th>
@@ -49,25 +49,27 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
-        <div class="modal fade" id="pemodal" aria-hidden="true" aria-labelledby="prodagresats" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5">Eliminar Producto</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <h6 id="modalbody"></h6>
-                </div>
-                <div class="modal-footer">
-                  <a id="delBtn" href="#" class="btn btn-outline-danger">Eliminar</a>
-                  <button id="caBtn"class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                </div>
-              </div>
+            <div class="d-flex justify-content-center mt-5 mb-5">
+                <a href="/jagregar"><button class="btn btn-primary me-2" type="submit">Agregar</button></a>
             </div>
-          </div>
-          
+        </div>
+        <div class="modal fade" id="pemodal" aria-hidden="true" aria-labelledby="prodagresats" tabindex="-1" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Eliminar Producto</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6 id="modalbody"></h6>
+                    </div>
+                    <div class="modal-footer">
+                        <a id="delBtn" href="#" class="btn btn-outline-danger">Eliminar</a>
+                        <button id="caBtn"class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
 

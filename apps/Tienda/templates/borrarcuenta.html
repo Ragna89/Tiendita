@@ -1,0 +1,41 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block title %} Eliminar Cuenta {% endblock %}
+
+{% block body %}
+<div id="contlgn" class=" d-flex justify-content-center" style=" margin-top: 5%;">
+    <div class="container col-md-4" style="background: rgba(0, 0, 0, 0.81); padding: 5%;">
+        <div class="col justify-content-center mb-3">
+            <h2 style="color: red;">¿Esta seguro que desea eliminar la cuenta?</h2>
+            <br>
+            <h4 style="color: red;">Esta acción no se puede revertir</h4>
+        </div>
+        <form id="registerform" action="/delAcc" method="POST" novalidate> {% csrf_token %}
+            <div class="col align-items-center">
+                <label for="password" class="form-label" style="color: white;">Contraseña:</label>
+                <input type="password" placeholder="Ingrese Contraseña" id="password" name="password" class="form-control">
+                <h6 style="font-size: small; text-align: center; color: white;">Debes ingresar la contraseña para confirmar</h6>
+            </div>
+            <br>
+            <div class="d-flex justify-content-center" style=" padding: 2%; margin-top: 4%;">
+                <button class="btn btn-outline-danger" type="submit" style="color: white;">Eliminar Cuenta</button>
+            </div>
+        </form>
+        <div class="d-flex justify-content-center mt-3">
+            <a href="/cargarcuenta"><button class="btn btn-secondary">Cancelar</button></a>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock body %}
+
+{% block script %}
+
+{% endblock %}

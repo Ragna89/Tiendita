@@ -57,6 +57,31 @@
     text-decoration: none;
 }
 
+#leftcanv a{
+    text-decoration: none;
+    color: black;
+}
+
+#pamodal {
+    color: white;
+}
+
+#contlgn a {
+    text-decoration: none;
+}
+
+.tabla-espaciada {
+    border-collapse: separate;
+    border-spacing: 20px;
+}
+
+.tabla-espaciada td {
+    padding: 3px;
+}
+
+.center-row {
+    text-align: center;
+}
 
 @font-face {
     font-family: fuente1;

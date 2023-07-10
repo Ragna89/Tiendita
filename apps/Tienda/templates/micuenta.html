@@ -1,0 +1,26 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block title %} Mi Cuenta {% endblock %}
+
+{% block body %}
+<div id="contlgn" class=" d-flex justify-content-center" style=" margin-top: 5%;">
+    <div class="container col-md-4" style="background: rgba(51,51,51,0.8); padding: 5%;">
+        <div class="d-flex justify-content-center mb-3"><h4 style="color: white;">Mi Cuenta</h4><br></div>
+        <div class="row">
+            <a href="/cedDatos/{{request.user.username}}" class="col-md-12 d-flex justify-content-center mt-2"><button class="btn btn-success form-control" type="button" style="color: white;">Editar Datos</button></a>
+            <a href="/cnewpass/{{request.user.username}}" class="col-md-12 d-flex justify-content-center mt-4"><button class="btn btn-primary form-control" type="button" style="color: white;">Cambiar Contraseña</button></a>
+            <a href="/cdelAcc/{{request.user.username}}" class="col-md-12 d-flex justify-content-center mt-4"><button class="btn btn-danger form-control" type="button" style="color: white;">Eliminar Cuenta</button></a>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
+
+{% block script %}
+
+{% endblock %}

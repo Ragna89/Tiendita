@@ -19,7 +19,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#" data-bs-toggle="offcanvas" data-bs-target="#catoffcanv" aria-controls="offcanvasWithBothOptions">Categorias</a>
+                <a class="nav-link active" aria-current="page" href="#" data-bs-toggle="offcanvas" data-bs-target="#catoffcanv" aria-controls="offcanvasWithBothOptions">Juegos</a>
               </li>
               <li class="nav-item">
                 <button type="button" class="nav-link active" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -64,9 +64,10 @@
                       Admin
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="/listaproductos">Lista de juegos</a></li>
-                      <li><a class="dropdown-item" href="/jagregar">Agregar juegos</a></li>
-                      <li><a class="dropdown-item" href="/userlist">Administar usuarios</a></li>
+                      <li><a class="dropdown-item justify-content-center" href="/listaproductos">Lista de juegos</a></li>
+                      <li><a class="dropdown-item" href="/jagregar">Agregar un juego</a></li>
+                      <li><a class="dropdown-item" href="/userlist">Lista de usuarios</a></li>
+                      <li><a class="dropdown-item" href="/admplataforma">Lista de plataformas</a></li>
                       <li><a class="dropdown-item text-center" href="/logout" style="color: rgb(156, 10, 10);">Cerrar Sesion</a></li>
                     </ul>
                   {% else %}
@@ -74,6 +75,7 @@
                       Usuario
                     </button>
                     <ul class="dropdown-menu">
+                      <li><a class="dropdown-item text-center" href="/cargarcuenta">Mi Cuenta</a></li>
                       <li><a class="dropdown-item text-center" href="/logout" style="color: rgb(156, 10, 10);">Cerrar Sesion</a></li>
                     </ul>
                   {% endif %}
@@ -94,34 +96,33 @@
         <div class="card mx-auto d-flex align-items-center" style="width: 250px; height:auto;"></div>
       </div>
 </header>
-<body onload="onLoad()">
+<body onload="actualizaReloj()">
   <img id="bgnlgn" src="{% static 'img/background.jpg' %}" alt="">
     <div id="leftcanv">
-      <div class="offcanvas offcanvas-start" class="navbar bg-dark" data-bs-theme="dark" data-bs-scroll="true" tabindex="-1" id="catoffcanv" aria-labelledby="offcanvasWBOL">
-      <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasWBOL">Categorias</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <div class="card" style="width: 100%;">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <div class="row justify-content-center">
-                  <div class="align-items-center">
-                      <h6>Acción</h6>
-                  </div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row justify-content-center">
-                  <div class="align-items-center">
-                      <h6>Deportes</h6>
-                  </div>
-              </div>
-            </li>
-          </ul>
+      <div class="offcanvas offcanvas-start" class="navbar" data-bs-scroll="true" tabindex="-1" id="catoffcanv" aria-labelledby="offcanvasWBOL">
+        <div class="offcanvas-header" style="border: solid rgba(34, 34, 34, 0.637); background-color: rgb(44, 44, 44); color: white">
+            <h5 class="offcanvas-title" id="offcanvasWBOL">Plataformas</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body" style="background-color: rgba(255, 250, 247, 0.945);">
+          <div class="card" style="width: 100%;">
+            <ul class="list-group list-group-flush">
+              {% for g in Gen %}
+              <a href="/plataforma/{{g.c_id}}">
+              <li class="list-group-item">
+                <div class="row justify-content-center">
+                    <div class="align-items-center">
+                      <tr>
+                        <td>{{g.c_plataforma}}</td>
+                      </tr>
+                    </div>
+                </div>
+              </li>
+              </a>
+              {% endfor %}
+            </ul>
           </div>
-      </div>
+        </div>
       </div>
     </div>
 
@@ -129,7 +130,6 @@
         <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="caroffcanv" aria-labelledby="offcanvasRightWBOL">
             <div class="offcanvas-header" style="border: solid rgba(34, 34, 34, 0.637); background-color: rgb(44, 44, 44); color: white">
                 <h5 class="offcanvas-title" id="offcanvasRightWBOL">Carro de Compra</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div id="carcanvbody" class="offcanvas-body" style="background-color: rgba(255, 250, 247, 0.945);">
               <table class="table">
@@ -138,6 +138,7 @@
                     <th scope="col">Imagen</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Precio</th>
+                    <th scope="col"> </th>
                   </tr>
                 </thead>
                 <tbody id="carrito-producto">
@@ -145,14 +146,15 @@
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
+                    <td>-</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div class="container" style="padding: 1%;"> Total: $<span id="carrito-precio1"></span></div>
+            <div class="container" style="padding: 1%;"> Total: $<span id="carrito-precio"></span></div>
             <div id="ccbtnc" class="container" style="border: solid rgba(92, 92, 92, 0.178);">
                 <button class="btn btn-light btn-outline-dark" type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" style="margin-right: 1%;">Seguir Comprando</button>
-                <a href="#" id="btncomprar"><button class="btn btn-outline-success" type="button" onclick="vaciarCarro()">Comprar</button></a>
+                <a href="/ccart" id="btncompra"><button class="btn btn-outline-success" type="button">Comprar</button></a>
             </div>
         </div>
     </div>
@@ -188,6 +190,9 @@
     <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
     <script src="{% static 'js/jquery.validate.min.js' %}"></script>
     <script src="{% static 'js/functions.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+    <script src="{% static 'js/carro.js' %}"></script>
+    <script src="{% static 'js/forms.js' %}"></script>
 
     {% block script %} {% endblock %}
 </body>

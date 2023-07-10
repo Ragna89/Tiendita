@@ -18,4 +18,22 @@ urlpatterns = [
     path('userlist', views.cUserlist, name="ListaUsuarios"),
     path('obtainUser', views.obInfUser),
     path('delUser/<username>', views.delUser),
+    path('plataforma/<id>', views.cargarplataforma),
+    path('admplataforma', views.admplataforma),
+    path('cargaragrplataforma', views.cargaragrplat),
+    path('agregarplat', views.agregarplat),
+    path('obtenerinfplat', views.obtenerinfplat),
+    path('delplat/<id>', views.eliminarplat),
+    path('edUser/<username>', views.cedUser),
+    path('editarusuario', views.editUser),
+    path('cargarcuenta', views.cmicuenta),
+    path('cedDatos/<username>', views.cedDatos),
+    path('edDatos', views.edDatos),
+    path('cnewpass/<username>', views.cnewpass),
+    path('newpass', views.newpass),
+    path('cdelAcc/<username>', views.cdelAcc),
+    path('delAcc', views.delAcc),
+    path('ccart', views.cCarrito),
+    
+    
 ]

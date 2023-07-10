@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
 {% endblock %}
 
-{% block title %} Agregar {% endblock %}
+{% block title %} Agregar Juego {% endblock %}
 
 {% block body %} 
     <img id="bgnlgn" src="{% static 'img/background.jpg' %}" alt="">
@@ -26,11 +26,11 @@
                             <input name="stock" type="number" id="stock" class="form-control">
                         </div>
                         <div class="col-md-12">
-                            <label for="genero" class="form-label" style="color: white;">Genero:</label>
+                            <label for="genero" class="form-label" style="color: white;">Plataforma:</label>
                             <select name="genero" id="genero" class="form-select" aria-label="Default select example">
                                 <option selected disabled value="null">Seleccione</option>
                                 {% for g in Gen %}
-                                    <option value="{{g.c_id}}">{{g.c_genero}}</option>
+                                    <option value="{{g.c_id}}">{{g.c_plataforma}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="d-flex justify-content-center mt-5">
                             <button class="btn btn-success me-2" type="submit">Agregar</button>
-                            <a href="/"><button class="btn btn-danger" type="submit">Cancelar</button></a>
+                            <a href="/listaproductos"><button class="btn btn-danger" type="button">Cancelar</button></a>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,51 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block title %} Datos de la Cuenta {% endblock %}
+
+{% block body %}
+<div id="contlgn" class=" d-flex justify-content-center" style=" margin-top: 5%; margin-bottom: 5%;">
+    <div class="container col-md-4" style="background: rgba(51,51,51,0.8); padding: 5%;">
+        <div class="d-flex justify-content-center mb-3"><h4 style="color: white;">Datos de la Cuenta</h4><br></div>
+        <form id="registerform" action="/edDatos" method="POST" novalidate> {% csrf_token %}
+            <div class="col align-items-center" style="display: none;">
+                <input value="{{User.username}}" type="text" id="usernameo" name="usernameo" class="form-control">
+            </div>
+            <div class="col align-items-center">
+                <label for="username" class="form-label" style="color: white;">Usuario:</label>
+                <input value="{{User.username}}" type="text" id="username" name="username" class="form-control">
+            </div>
+            <br>
+            <div class="col align-items-center" style="display: none;">
+                <input value="{{User.email}}" type="text" id="emailo" name="emailo" class="form-control">
+            </div>
+            <div class="col align-items-center">
+                <label for="email" class="form-label" style="color: white;">E-Mail:</label>
+                <input value="{{User.email}}" type="text" id="email" name="email" class="form-control">
+            </div>
+            <br>
+            <div class="col align-items-center">
+                <label for="password" class="form-label" style="color: white;">Contraseña:</label>
+                <input type="password" placeholder="Ingrese contraseña" id="password" name="password" class="form-control">
+                <h6 style="font-size: small; text-align: center; color: white;">Debes ingresar la contraseña para confirmar los cambios</h6>
+            </div>
+            <br>
+            <div class="d-flex justify-content-center" style=" padding: 2%; margin-top: 4%;">
+                <button class="btn btn-success" type="submit" style="color: white;">Editar Usuario</button>
+            </div>
+        </form>
+        <div class="d-flex justify-content-center mt-3">
+            <a href="/cargarcuenta"><button class="btn btn-danger" >Cancelar</button></a>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
+
+{% block script %}
+
+{% endblock %}
