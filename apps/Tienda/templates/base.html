@@ -23,31 +23,40 @@
               </li>
               <li class="nav-item">
                 <button type="button" class="nav-link active" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  Sobre Nosotros
+                  Donde estamos
                 </button>
               <!-- Modal -->
               <div class="modal fade" style="color: white;" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Sobre Nosotros</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-dialog modal-xl"> <!-- Añadida la clase modal-xl para aumentar el tamaño -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Donde estamos</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="display: flex; justify-content: center; align-items: center; margin-top: 2%;">
+                                <div style="flex: 1; margin-right: 10px; padding-right: 20px; box-shadow: 5px 0px 5px -2px rgba(0,0,0,0.1);">
+                                    <img src="/media/img_prod/Lacasadelplay.webp" alt="Imagen de Lacasadelplay" style="width: 100%; height: 550px; object-fit: cover; margin-left: 55px;">
+                                </div>
+                            
+                                <div style="flex: 2; margin-left: 10px; padding-left: 20px; box-shadow: -5px 0px 5px -2px rgba(0,0,0,0.1); margin-right: 55px;">
+                                    <iframe
+                                        width="100%"
+                                        height="550"
+                                        style="border:0;"
+                                        loading="lazy"
+                                        allowfullscreen
+                                        referrerpolicy="no-referrer-when-downgrade"
+                                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCOBPauUcWDP-szXgjZW0LoGyLqOpwwSdA&q=Papulandia 🥵">
+                                    </iframe>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                      <h4>Horarios</h4>
-                      <h6>Lunes a Viernes: 10:00 a 19:00</h6>
-                      <h6>Sabado: 12:00 a 18:00</h6>
-                      <br>
-                      <h4>Contacto</h4>
-                      <h6>E-Mail: playstation@gmail.com</h6>
-                      <h6>Fono: +56 9 12341234</h6>
-                      <br>
-                      <h4>La casa del Play</h4>
-                      <h6>Av. Santa Rosa #1500, San Joaquin</h6>
-                    </div>
-                  </div>
                 </div>
-              </div>
+            </div>
+            
+              
               </li>
               <li class="nav-link disable"><h5 id="hora">Hora: </h5></li>
             </ul>
