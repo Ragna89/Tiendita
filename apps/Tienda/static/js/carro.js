@@ -1,6 +1,7 @@
 
 var array_productos1 = [];
 
+
 if (localStorage.getItem('Productos1')) {
     array_productos = JSON.parse(localStorage.getItem('Productos')) || [];
     var array_productos1 = array_productos1.concat(array_productos);
@@ -62,6 +63,7 @@ function llenar_carroc() {
 
         var spanElement = document.getElementById('carrospan');
         spanElement.textContent = arrayLength;
+        $('#total_carrito').val(total);
     }
 }
 
@@ -86,74 +88,6 @@ window.addEventListener('load', function() {
 
 var btncomprar = document.getElementById('btncomprar');
 
-function boleta() {
-    var contenido = document.getElementById("bodycart").cloneNode(true);
-    var elementos = contenido.querySelectorAll(".eboleta");
-    var spantotal = document.getElementById("carrito-precio1");
-    var total = spantotal.textContent;
-    
-    document.body.innerHTML = "";
-    document.title = "Boleta";
-  
-    var titulo = document.createElement("h2");
-    titulo.classList.add("d-flex","justify-content-center", "mt-5", "mb-3");
-    titulo.textContent = "Boleta de Compra";
-    document.body.appendChild(titulo);
-
-    var texto2 = document.createElement("p");
-    texto2.classList.add("d-flex","justify-content-center","mb-1");
-    texto2.textContent = "Casa Matriz: Av. Juanito Perez #348, Providencia";
-    document.body.appendChild(texto2);
-
-    var texto3 = document.createElement("p");
-    texto3.classList.add("d-flex","justify-content-center","mb-1");
-    texto3.textContent = "Fono Contacto: 2 22322122";
-    document.body.appendChild(texto3);
-
-    var fecha = document.createElement("p");
-    fecha.classList.add("d-flex","justify-content-center","mb-1");
-    fecha.textContent = "Fecha: " + obtenerFechaActual() + "- Hora:" + obtenerHora();
-    document.body.appendChild(fecha);
-  
-    var tabla = document.createElement("table");
-    tabla.classList.add("tabla-espaciada","mx-auto");
-
-    var filaActual;
-
-    elementos.forEach(function(elemento, index) {
-    if (index % 2 === 0) {
-        filaActual = document.createElement("tr");
-    }
-
-    var celda = document.createElement("td");
-    celda.appendChild(elemento.cloneNode(true));
-
-    filaActual.appendChild(celda);
-
-    if (index % 2 === 1 || index === elementos.length - 1) {
-        tabla.appendChild(filaActual);
-    }
-    });
-    var filaTotal = document.createElement("tr");
-
-    var celdaTotal = document.createElement("td");
-    celdaTotal.classList.add("center-row");
-    celdaTotal.colSpan = 2;
-    celdaTotal.textContent = "Total: $"+ total;
-
-    filaTotal.appendChild(celdaTotal);
-
-    tabla.appendChild(filaTotal);
-    document.body.appendChild(tabla);
-    document.body.appendChild(document.createElement("br"));
-
-    
-  
-    window.print();
-  
-    location.reload();
-  }
-
   function obtenerHora(){
     var fecha = new Date();
     var hora = fecha.getHours();
@@ -170,7 +104,7 @@ function boleta() {
     return dia + "/" + mes + "/" + anio;
   }
   
-
+var total_carro = document.getElementById('total_carrito');
 btncomprar.addEventListener('click', function(){
     var arrayData = array_productos1;
     var arrayLength = arrayData.length;
@@ -178,7 +112,8 @@ btncomprar.addEventListener('click', function(){
     if (arrayLength == 0){
         alert("Debes Agregar Elementos al Carro");
     }else{
-        boleta();
+        var total = total_carro.value
+        btncomprar.href = '/iniciar_pago/?total=' + total;
     }
     
 });

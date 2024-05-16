@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import iniciar_pago, confirmar_pago
 
 urlpatterns = [
     path('', views.cargarinicio, name='inicio'),
@@ -34,6 +35,9 @@ urlpatterns = [
     path('cdelAcc/<username>', views.cdelAcc),
     path('delAcc', views.delAcc),
     path('ccart', views.cCarrito),
+    path('iniciar_pago/', iniciar_pago, name='iniciar_pago'),
+    path('confirmar_pago/', confirmar_pago, name='confirmar_pago'),
+
     
     
 ]

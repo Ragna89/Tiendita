@@ -1,0 +1,22 @@
+{% extends './base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block title %} Pago Fallido {% endblock %}
+
+{% block body %}
+    <section id="bgkc" class="onesalg">
+        <div class="form-group">
+            <h4 style="color: white;">Pago fallido</h4>
+            <a href="/"><button>Volver</button></a>
+        </div>
+    </section>
+{% endblock body %}
+
+{% block script%}
+<script src="{% static 'js/carro.js' %}"></script>
+{% endblock %}

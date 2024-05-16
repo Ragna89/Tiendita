@@ -9,6 +9,10 @@ import os
 import json
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
+from django.conf import settings
+from .transbank import crear_transaccion, confirmar_transaccion
+import random
 
 # Create your views here.
 def cargarinicio(request):
@@ -405,3 +409,30 @@ def cCarrito(request):
     prod = Producto.objects.all()
     cate = Plataforma.objects.all()
     return render(request, 'carro.html', {'Prod': prod, 'Gen': cate})
+
+def iniciar_pago(request):
+
+    total = request.GET.get('total')
+    buy_order = 'orden_compra_' + str(random.randint(100000, 999999))
+    session_id = 'session_' + str(random.randint(100000, 999999))
+    amount = total  # Monto de la transacción en pesos chilenos
+    return_url = request.build_absolute_uri('/confirmar_pago/')
+
+    response = crear_transaccion(buy_order, session_id, amount, return_url)
+    if 'token' in response and 'url' in response:
+        
+        return redirect(response['url'] + '?token_ws=' + response['token'])
+    
+    else:
+        # Manejar error
+        return render(request, 'error.html', {'error': response})
+
+def confirmar_pago(request):
+    token = request.GET.get('token_ws')
+    response = confirmar_transaccion(token)
+    print(token)
+    if response['status'] == 'AUTHORIZED':
+        
+        return render(request, 'pagoexitoso.html', {'response': response})
+    else:
+        return render(request, 'pagofallido.html', {'response': response})

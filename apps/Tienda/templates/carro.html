@@ -33,13 +33,16 @@
                         </table>
                     </div>
                     <div class="container mx-auto"> Total: $<span id="carrito-precio1"></span></div>
+                    <form type="hidden" method="POST"> {% csrf_token %}
+                        <input type="hidden" id="total_carrito" name="total_carrito" value="0">
+                    </form>
                     </li>
                 </ul>
             </div>
             <div class="d-flex row justify-content-end" style="padding: 5%;">
                 <div class="containercart" style="padding-left: 5%;">
                     <a href="/"><button class="btn btn-light btn-outline-dark mt-2 mx-auto" type="button">Seguir Comprando</button></a>
-                    <a id="btncomprar" href="#"><button class="btn btn-success mt-2 mx-auto" type="button">Proceder Con el Pago</button></a>
+                    <a id="btncomprar"><button class="btn btn-success mt-2 mx-auto" type="button">Proceder Con el Pago</button></a>
                 </div>
             </div>
         </div>
